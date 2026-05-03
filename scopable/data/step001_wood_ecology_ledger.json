@@ -1,0 +1,57 @@
+{
+  "project": "Scopable",
+  "step": "STEP 001 — Wood Ecology Stabilization",
+  "records": [
+    {
+      "name": "Fallen Log Moisture Drift",
+      "type": "System",
+      "canonState": "APPROVED CANON",
+      "releaseState": "Draft Validation",
+      "devScore": 50,
+      "implementationPriority": "P0",
+      "dependencies": [],
+      "blockers": [],
+      "requiredFiles": ["scopable/data/step001_wood_ecology_ledger.json"],
+      "requiredAssets": ["log_moisture_states.png (placeholder)"],
+      "testsNeeded": ["Tick progression test", "Biome variance test"],
+      "deferredCuts": ["Ambient particle pass"],
+      "patchSupportLane": "PATCH CANDIDATE",
+      "knowledgeBaseDestination": "kb/wood-ecology/fallen-log-moisture",
+      "nextAction": "Implement in-world state transitions and debug readout"
+    },
+    {
+      "name": "Deadwood Decay Balancing",
+      "type": "Mechanic",
+      "canonState": "CONTEXT-APPROVED / IMPLEMENTATION-READY",
+      "releaseState": "Internal Draft",
+      "devScore": 25,
+      "implementationPriority": "P0",
+      "dependencies": ["Fallen Log Moisture Drift"],
+      "blockers": ["No live world telemetry"],
+      "requiredFiles": ["scopable/data/step001_wood_ecology_ledger.json"],
+      "requiredAssets": ["none"],
+      "testsNeeded": ["Drop-rate regression", "Progression pacing review"],
+      "deferredCuts": ["Crayfish / rotten log ecology"],
+      "patchSupportLane": "SEASONAL CANDIDATE",
+      "knowledgeBaseDestination": "kb/wood-ecology/deadwood-decay",
+      "nextAction": "Add balancing table and hook to profile-level test checklist"
+    }
+  ],
+  "deferredExpansionPanel": [
+    "Termite generation",
+    "Crayfish / rotten log ecology",
+    "Bee / hive stress",
+    "Facade / hollow systems",
+    "Bark / sawdust / incense material chain",
+    "Herbs / oils / teas",
+    "Treated / preserved wood",
+    "Bubbler / ladle / trim dipping",
+    "Resonant honey / tech",
+    "Resonance systems",
+    "Pouch / bandolier",
+    "Body needs versus temperature",
+    "Ambient particles",
+    "Mechanical tree propagation",
+    "Debug wand mapping"
+  ]
+}

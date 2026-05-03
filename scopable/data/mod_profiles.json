@@ -1,0 +1,29 @@
+{
+  "project": "Scopable",
+  "layers": [
+    "Platform Foundation",
+    "Core Modules",
+    "Expansion Modules",
+    "Seasonal / Patch Content",
+    "Compatibility / Adaptation"
+  ],
+  "profiles": [
+    {
+      "modName": "Scopable Core",
+      "modId": "scopable_core",
+      "version": "0.1.0-draft",
+      "minecraftTarget": "1.20.x",
+      "loaderTarget": "Fabric/Forge (TBD)",
+      "status": "Active Draft",
+      "devScore": 50,
+      "canonState": "CONTEXT-APPROVED / IMPLEMENTATION-READY",
+      "releaseState": "Internal Draft",
+      "requiredDependencies": [],
+      "optionalDependencies": [],
+      "compatTargets": [
+        { "name": "Create", "enabled": false, "state": "Optional Integration" }
+      ],
+      "nextAction": "Validate STEP 001 wood ecology stabilization hooks in gameplay test world"
+    }
+  ]
+}
