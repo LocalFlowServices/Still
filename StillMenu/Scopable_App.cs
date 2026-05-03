@@ -5,7 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Text.Json;
+using System.Web.Script.Serialization;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -323,14 +324,13 @@ git status
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
 
-            var body = new Dictionary<string, object>
-            {
-                ["model"] = "gpt-4.1-mini",
-                ["input"] = prompt
-            };
-            if (!string.IsNullOrWhiteSpace(_previousResponseId)) body["previous_response_id"] = _previousResponseId;
+            var payload = new Dictionary<string, object>();
+            payload["model"] = "gpt-4.1-mini";
+            payload["input"] = prompt;
+            if (!string.IsNullOrWhiteSpace(_previousResponseId)) payload["previous_response_id"] = _previousResponseId;
 
-            var json = JsonSerializer.Serialize(body);
+            var serializer = new JavaScriptSerializer();
+            var json = serializer.Serialize(payload);
             var resp = await client.PostAsync("https://api.openai.com/v1/responses", new StringContent(json, Encoding.UTF8, "application/json"));
             var raw = await resp.Content.ReadAsStringAsync();
 
@@ -340,37 +340,35 @@ git status
                 return;
             }
 
-            using var doc = JsonDocument.Parse(raw);
-            _previousResponseId = doc.RootElement.TryGetProperty("id", out var id) ? id.GetString() ?? string.Empty : string.Empty;
+            var map = serializer.Deserialize<Dictionary<string, object>>(raw);
+            if (map != null && map.ContainsKey("id") && map["id"] != null) _previousResponseId = map["id"].ToString() ?? string.Empty;
             File.WriteAllText(_threadFile, _previousResponseId);
 
-            var text = ExtractOutputText(doc.RootElement);
-            _chatOutput.Text += $"\nYou: {prompt}\nGPT: {text}\n";
+            var text = ExtractOutputText(raw, map);
+            _chatOutput.Text += "\nYou: " + prompt + "\nGPT: " + text + "\n";
             _chatInput.Text = string.Empty;
             PersistTranscript(prompt, text);
             LogStatus("GPT response received.");
         }
 
-        private static string ExtractOutputText(JsonElement root)
+        private static string ExtractOutputText(string raw, Dictionary<string, object> map)
         {
-            if (root.TryGetProperty("output_text", out var outputText) && outputText.ValueKind == JsonValueKind.String)
-                return outputText.GetString() ?? "";
-            if (root.TryGetProperty("output", out var output) && output.ValueKind == JsonValueKind.Array)
+            if (map != null && map.ContainsKey("output_text") && map["output_text"] != null)
             {
-                var lines = new List<string>();
-                foreach (var item in output.EnumerateArray())
-                {
-                    if (item.TryGetProperty("content", out var content) && content.ValueKind == JsonValueKind.Array)
-                    {
-                        foreach (var c in content.EnumerateArray())
-                        {
-                            if (c.TryGetProperty("text", out var txt)) lines.Add(txt.GetString() ?? "");
-                        }
-                    }
-                }
-                return string.Join("\n", lines.Where(s => !string.IsNullOrWhiteSpace(s)));
+                var direct = map["output_text"].ToString();
+                if (!string.IsNullOrWhiteSpace(direct)) return direct;
             }
-            return "No text returned.";
+
+            var matches = Regex.Matches(raw, "\"text\"\s*:\s*\"([^\"]*)\"");
+            if (matches.Count == 0) return "No text returned.";
+
+            var lines = new List<string>();
+            foreach (Match m in matches)
+            {
+                var val = m.Groups[1].Value.Replace("\\n", "\n").Replace("\\"", """);
+                if (!string.IsNullOrWhiteSpace(val)) lines.Add(val);
+            }
+            return lines.Count > 0 ? string.Join("\n", lines) : "No text returned.";
         }
 
         private void PersistTranscript(string prompt, string response)

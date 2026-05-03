@@ -57,7 +57,7 @@ $cscArgs = @(
   '/r:' + $presentationCore,
   '/r:' + $windowsBase,
   '/r:System.Net.Http.dll',
-  '/r:System.Text.Json.dll',
+  '/r:System.Web.Extensions.dll',
   $source
 )
 

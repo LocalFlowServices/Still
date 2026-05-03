@@ -1,0 +1,23 @@
+{
+  "batch_id": "CODEX-TRIAGE-STEP001-2026-05-03",
+  "repairs": [
+    {
+      "id": "SCOPABLE-WPF-001",
+      "status": "completed",
+      "problem": "Compile path failed with empty source args and unresolved WPF references.",
+      "fix": "Added absolute-path WPF probing and safe $cscArgs compilation script."
+    },
+    {
+      "id": "SCOPABLE-API-002",
+      "status": "completed",
+      "problem": "System.Text.Json dependency is brittle on .NET Framework csc targets.",
+      "fix": "Replaced JSON handling with JavaScriptSerializer + regex fallback extraction."
+    },
+    {
+      "id": "STEP001-WOOD-003",
+      "status": "pending",
+      "problem": "Wood ecology registry/assets/mechanics were not present in this repository snapshot.",
+      "fix": "Queued for implementation once Java/Gradle mod source is available in active root."
+    }
+  ]
+}

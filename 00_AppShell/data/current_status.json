@@ -1,0 +1,13 @@
+{
+  "project": "Still / Scopable",
+  "build_type": "rough-draft-testbed",
+  "step": "STEP-001 Wood Ecology Stabilization",
+  "app_shell": {
+    "scopable_ui": "functional-source-updated",
+    "wpf_build_script": "ready-for-windows-host"
+  },
+  "notes": [
+    "Container environment cannot execute Windows WPF build or desktop shortcut linking.",
+    "Scopable source/build flow updated to avoid fragile PowerShell interpolation and custom $args usage."
+  ]
+}
