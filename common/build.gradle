@@ -1,0 +1,7 @@
+architectury {
+    common("fabric", "forge", "neoforge")
+}
+
+dependencies {
+    modImplementation "net.fabricmc:fabric-loader:${loader_version}"
+}
