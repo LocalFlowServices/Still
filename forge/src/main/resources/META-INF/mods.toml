@@ -1,0 +1,12 @@
+modLoader="javafml"
+loaderVersion="[55,)"
+license="All Rights Reserved"
+
+[[mods]]
+modId="still"
+version="${version}"
+displayName="Still"
+authors="LocalFlowServices"
+description='''
+Cross-loader bootstrap mod for Fabric, Forge, and NeoForge.
+'''

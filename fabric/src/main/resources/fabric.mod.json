@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "still",
+  "version": "${version}",
+  "name": "Still",
+  "description": "Cross-loader bootstrap mod for Fabric, Forge, and NeoForge.",
+  "authors": [
+    "LocalFlowServices"
+  ],
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.localflowservices.still.fabric.StillFabric"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.17.0",
+    "minecraft": "~1.26"
+  }
+}
